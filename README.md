@@ -18,7 +18,7 @@
 
 ## What Is This?
 
-**Knowledge Spaces** is a suite of 10 AI-powered skills (slash commands) that implement the full [Knowledge Space Theory](https://en.wikipedia.org/wiki/Knowledge_space) (KST) pipeline. Give it your course materials — a syllabus, textbook, standards document — and it will:
+**Knowledge Spaces** is a suite of 10 AI-powered [Agent Skills](https://agentskills.io) that implement the full [Knowledge Space Theory](https://en.wikipedia.org/wiki/Knowledge_space) (KST) pipeline. Give it your course materials — a syllabus, textbook, standards document — and it will:
 
 1. **Extract** atomic knowledge items from your materials
 2. **Discover** prerequisite relationships between items
@@ -65,7 +65,7 @@ git clone https://github.com/vanderbilt-data-science/knowledge-spaces.git
 cd knowledge-spaces
 
 # That's it. No dependencies to install.
-# The skills are Claude Code slash commands in .claude/commands/
+# The skills follow the Agent Skills open standard in .claude/skills/
 # The Python utilities use only the standard library.
 ```
 
@@ -76,19 +76,19 @@ cd knowledge-spaces
 claude
 
 # Step 1: Extract knowledge items from your course materials
-> /extract-domain path/to/your/syllabus.pdf
+> /extracting-knowledge-items path/to/your/syllabus.pdf
 
 # Step 2: Build the concept map and discover prerequisites
-> /map-concepts graphs/your-domain-knowledge-graph.json
+> /mapping-concepts-and-competences graphs/your-domain-knowledge-graph.json
 
 # Step 3: Construct the formal prerequisite relation
-> /build-surmise graphs/your-domain-knowledge-graph.json
+> /building-surmise-relations graphs/your-domain-knowledge-graph.json
 
 # Step 4: Derive the full knowledge space
-> /construct-space graphs/your-domain-knowledge-graph.json
+> /constructing-knowledge-space graphs/your-domain-knowledge-graph.json
 
 # Step 5: Validate everything
-> /validate-structure graphs/your-domain-knowledge-graph.json
+> /validating-knowledge-structure graphs/your-domain-knowledge-graph.json
 ```
 
 You now have a mathematically validated knowledge space. Use it to assess students, generate materials, or plan instruction.
@@ -98,32 +98,37 @@ You now have a mathematically validated knowledge space. Use it to assess studen
 ## The Pipeline
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                     PHASE 1: Domain Analysis                        │
-│                                                                     │
-│  /extract-domain ──→ /decompose-objectives ──→ /map-concepts        │
-│  Course materials    Learning objectives       Concept map &        │
-│  → knowledge items   → atomic items            competences          │
-│                      (Bloom's, DOK, SOLO,                           │
-│                       Fink's, ECD)                                  │
-├─────────────────────────────────────────────────────────────────────┤
-│                PHASE 2: Structure Construction                      │
-│                                                                     │
-│  /build-surmise ──→ /construct-space ──→ /validate-structure        │
-│  QUERY algorithm     Enumerate states,   Mathematical &             │
-│  → prerequisites     fringes, paths      educational checks         │
-├─────────────────────────────────────────────────────────────────────┤
-│                    PHASE 3: Application                             │
-│                                                                     │
-│  /assess-student    /generate-materials    /plan-instruction        │
-│  Adaptive BLIM      Personalized content   Class-wide JIT           │
-│  assessment          for outer fringe      lecture planning          │
-├─────────────────────────────────────────────────────────────────────┤
-│                    PHASE 4: Maintenance                             │
-│                                                                     │
-│  /update-domain                                                     │
-│  Evolve the structure when curriculum changes                       │
-└─────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          PHASE 1: Domain Analysis                            │
+│                                                                              │
+│  /extracting-knowledge-items ─→ /decomposing-learning-objectives             │
+│  Course materials → items       Learning objectives → atomic items           │
+│                                 (Bloom's, DOK, SOLO, Fink's, ECD)           │
+│                                        ↓                                     │
+│                           /mapping-concepts-and-competences                   │
+│                           Concept map & competences (CbKST)                  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                       PHASE 2: Structure Construction                        │
+│                                                                              │
+│  /building-surmise-relations ─→ /constructing-knowledge-space                │
+│  QUERY algorithm → prerequisites  Enumerate states, fringes, paths           │
+│                                        ↓                                     │
+│                           /validating-knowledge-structure                     │
+│                           Mathematical & educational checks                  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                          PHASE 3: Application                                │
+│                                                                              │
+│  /assessing-knowledge-state  /generating-learning-materials                  │
+│  Adaptive BLIM assessment    Personalized content for outer fringe           │
+│                                                                              │
+│  /planning-adaptive-instruction                                              │
+│  Class-wide JIT lecture planning                                             │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                          PHASE 4: Maintenance                                │
+│                                                                              │
+│  /updating-knowledge-domain                                                  │
+│  Evolve the structure when curriculum changes                                │
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -134,31 +139,31 @@ You now have a mathematically validated knowledge space. Use it to assess studen
 
 | Skill | Purpose | Input | Output |
 |-------|---------|-------|--------|
-| `/extract-domain` | Extract atomic knowledge items from course materials | Syllabus, textbook, standards | `items[]` with Bloom's, DOK, competences |
-| `/decompose-objectives` | Decompose learning objectives into testable items | Learning objectives | Refined `items[]` with 5-framework classification |
-| `/map-concepts` | Build concept map, identify competences (CbKST) | Knowledge graph + materials | `competences[]`, preliminary prerequisites, Mermaid diagrams |
+| `/extracting-knowledge-items` | Extract atomic knowledge items from course materials | Syllabus, textbook, standards | `items[]` with Bloom's, DOK, competences |
+| `/decomposing-learning-objectives` | Decompose learning objectives into testable items | Learning objectives | Refined `items[]` with 5-framework classification |
+| `/mapping-concepts-and-competences` | Build concept map, identify competences (CbKST) | Knowledge graph + materials | `competences[]`, preliminary prerequisites, Mermaid diagrams |
 
 ### Phase 2: Structure Construction
 
 | Skill | Purpose | Input | Output |
 |-------|---------|-------|--------|
-| `/build-surmise` | Construct the prerequisite relation (QUERY algorithm) | Knowledge graph with items | `surmise_relations[]`, `competence_relations[]` |
-| `/construct-space` | Derive all feasible knowledge states | Knowledge graph with relations | `knowledge_states[]`, `learning_paths[]`, Hasse diagram |
-| `/validate-structure` | Validate mathematical and educational properties | Complete knowledge graph | Validation report (PASS/WARN/FAIL) |
+| `/building-surmise-relations` | Construct the prerequisite relation (QUERY algorithm) | Knowledge graph with items | `surmise_relations[]`, `competence_relations[]` |
+| `/constructing-knowledge-space` | Derive all feasible knowledge states | Knowledge graph with relations | `knowledge_states[]`, `learning_paths[]`, Hasse diagram |
+| `/validating-knowledge-structure` | Validate mathematical and educational properties | Complete knowledge graph | Validation report (PASS/WARN/FAIL) |
 
 ### Phase 3: Application
 
 | Skill | Purpose | Input | Output |
 |-------|---------|-------|--------|
-| `/assess-student` | Adaptive assessment using BLIM/PoLIM | Knowledge graph + student ID | Student knowledge state, fringes, competence state |
-| `/generate-materials` | Generate personalized learning materials | Knowledge graph + student state | Explanations, examples, problems (UDL 3.0) |
-| `/plan-instruction` | JIT lecture planning from class data | Knowledge graph + all students | Session plan with groupings, targets, peer tutoring |
+| `/assessing-knowledge-state` | Adaptive assessment using BLIM/PoLIM | Knowledge graph + student ID | Student knowledge state, fringes, competence state |
+| `/generating-learning-materials` | Generate personalized learning materials | Knowledge graph + student state | Explanations, examples, problems (UDL 3.0) |
+| `/planning-adaptive-instruction` | JIT lecture planning from class data | Knowledge graph + all students | Session plan with groupings, targets, peer tutoring |
 
 ### Phase 4: Maintenance
 
 | Skill | Purpose | Input | Output |
 |-------|---------|-------|--------|
-| `/update-domain` | Update structure for curriculum changes | Knowledge graph + change description | Updated graph + impact analysis |
+| `/updating-knowledge-domain` | Update structure for curriculum changes | Knowledge graph + change description | Updated graph + impact analysis |
 
 ---
 
@@ -191,7 +196,7 @@ Fringes are remarkably compact — ALEKS research shows a state with 80 items ty
 
 ### The Assessment Model
 
-The `/assess-student` skill implements an ALEKS-style adaptive assessment:
+The `/assessing-knowledge-state` skill implements an ALEKS-style adaptive assessment:
 
 1. Start with uniform probability over all feasible states
 2. Ask a question about the item that maximally discriminates between states (~50/50 split)
@@ -206,23 +211,23 @@ This is orders of magnitude more efficient than testing every item individually.
 
 ### In Claude Code (CLI)
 
-The skills are standard [Claude Code custom slash commands](https://docs.anthropic.com/en/docs/claude-code/tutorials/custom-slash-commands). Clone this repo and work from within it:
+The skills follow the [Agent Skills open standard](https://agentskills.io) and live in `.claude/skills/`. Clone this repo and work from within it:
 
 ```bash
 cd knowledge-spaces
 claude
 
 # Use any skill with /skill-name and pass arguments
-> /extract-domain path/to/syllabus.pdf
-> /build-surmise graphs/my-course-knowledge-graph.json
-> /assess-student graphs/my-course-knowledge-graph.json student-alice
+> /extracting-knowledge-items path/to/syllabus.pdf
+> /building-surmise-relations graphs/my-course-knowledge-graph.json
+> /assessing-knowledge-state graphs/my-course-knowledge-graph.json student-alice
 ```
 
-**To use the skills in a different project**, copy the `.claude/commands/` directory, the `scripts/` directory, and the `schemas/` directory into your project:
+**To use the skills in a different project**, copy the `.claude/skills/` directory, the `scripts/` directory, and the `schemas/` directory into your project:
 
 ```bash
 # From your project directory
-cp -r path/to/knowledge-spaces/.claude/commands/ .claude/commands/
+cp -r path/to/knowledge-spaces/.claude/skills/ .claude/skills/
 cp -r path/to/knowledge-spaces/scripts/ scripts/
 cp -r path/to/knowledge-spaces/schemas/ schemas/
 mkdir -p graphs
@@ -230,7 +235,7 @@ mkdir -p graphs
 
 ### In Claude Code (VS Code / JetBrains)
 
-The skills work identically in Claude Code's IDE integrations. Open the project in your IDE, open the Claude Code panel, and type `/extract-domain` (or any skill name) to invoke it.
+The skills work identically in Claude Code's IDE integrations. Open the project in your IDE, open the Claude Code panel, and type `/extracting-knowledge-items` (or any skill name) to invoke it.
 
 ### With Claude Cowork (Multi-Agent)
 
@@ -238,54 +243,56 @@ The pipeline has natural parallelism that [Cowork](https://docs.anthropic.com/en
 
 **Phase 1 — Parallel domain analysis:**
 ```
-You can run /extract-domain, /decompose-objectives, and /map-concepts in parallel
-if they operate on different source materials. They all contribute to the same
-knowledge graph and will be merged.
+You can run /extracting-knowledge-items, /decomposing-learning-objectives,
+and /mapping-concepts-and-competences in parallel if they operate on different
+source materials. They all contribute to the same knowledge graph and will be merged.
 ```
 
 **Phase 2 — Sequential (each step depends on the previous):**
 ```
-/build-surmise → /construct-space → /validate-structure
+/building-surmise-relations → /constructing-knowledge-space → /validating-knowledge-structure
 These must run in order.
 ```
 
 **Phase 3 — Parallel per student:**
 ```
-Run /assess-student for multiple students simultaneously.
-Run /generate-materials for multiple students simultaneously.
+Run /assessing-knowledge-state for multiple students simultaneously.
+Run /generating-learning-materials for multiple students simultaneously.
 Each operates on its own student state independently.
 ```
 
 **Example Cowork session:**
 ```
 Start 3 agents:
-  Agent 1: /extract-domain syllabus.pdf
-  Agent 2: /decompose-objectives objectives.md
-  Agent 3: /extract-domain textbook-ch1.pdf
+  Agent 1: /extracting-knowledge-items syllabus.pdf
+  Agent 2: /decomposing-learning-objectives objectives.md
+  Agent 3: /extracting-knowledge-items textbook-ch1.pdf
 
 When all complete, merge results and run:
-  Agent 4: /map-concepts graphs/combined-knowledge-graph.json
-  → /build-surmise → /construct-space → /validate-structure
+  Agent 4: /mapping-concepts-and-competences graphs/combined-knowledge-graph.json
+  → /building-surmise-relations → /constructing-knowledge-space
+  → /validating-knowledge-structure
 
 Then fan out for assessment:
-  Agent 5: /assess-student graphs/course-kg.json student-alice
-  Agent 6: /assess-student graphs/course-kg.json student-bob
-  Agent 7: /assess-student graphs/course-kg.json student-carol
+  Agent 5: /assessing-knowledge-state graphs/course-kg.json student-alice
+  Agent 6: /assessing-knowledge-state graphs/course-kg.json student-bob
+  Agent 7: /assessing-knowledge-state graphs/course-kg.json student-carol
 
 Finally, plan instruction:
-  Agent 8: /plan-instruction graphs/course-kg.json
+  Agent 8: /planning-adaptive-instruction graphs/course-kg.json
 ```
 
 ### On Other Platforms (Claude.ai, API, etc.)
 
-The skill files are self-contained markdown prompts. You can use them on any platform that supports Claude:
+The SKILL.md files are self-contained markdown prompts. You can use them on any platform that supports Claude:
 
-1. **Copy the skill text** from any `.claude/commands/*.md` file
+1. **Copy the skill text** from any `.claude/skills/<skill-name>/SKILL.md` file
 2. **Paste it as a system prompt** or prepend it to your message
 3. **Replace `$ARGUMENTS`** with your actual input
 4. **Include `scripts/kst_utils.py`** in the conversation if the skill references it (for computational validation)
+5. **Load reference files** from `references/` or `shared-references/` if the skill mentions them for deeper context
 
-The skills are designed so that an agent with no prior context can execute them — all theoretical grounding, methodology, and output format specifications are embedded in each skill file.
+The skills are designed so that an agent with no prior context can execute them — all methodology and output format specifications are embedded in each SKILL.md file, with extended theoretical grounding available in reference files.
 
 ### With the Claude API (Programmatic)
 
@@ -295,7 +302,7 @@ import anthropic
 client = anthropic.Anthropic()
 
 # Read the skill prompt
-with open(".claude/commands/extract-domain.md") as f:
+with open(".claude/skills/extracting-knowledge-items/SKILL.md") as f:
     skill_prompt = f.read()
 
 # Replace $ARGUMENTS with your input
@@ -367,26 +374,47 @@ python3 scripts/kst_utils.py stats <graph.json>         # Print summary statisti
 ```
 knowledge-spaces/
 ├── README.md
-├── LICENSE                              # MIT License
-├── CLAUDE.md                            # Project context for Claude agents
-├── .claude/commands/                    # The 10 skill files
-│   ├── extract-domain.md               # Phase 1: Extract items
-│   ├── decompose-objectives.md         # Phase 1: Decompose objectives
-│   ├── map-concepts.md                 # Phase 1: Concept map & competences
-│   ├── build-surmise.md               # Phase 2: QUERY algorithm
-│   ├── construct-space.md             # Phase 2: Knowledge space
-│   ├── validate-structure.md          # Phase 2: Validation
-│   ├── assess-student.md             # Phase 3: Adaptive assessment
-│   ├── generate-materials.md         # Phase 3: Learning materials
-│   ├── plan-instruction.md           # Phase 3: Lecture planning
-│   └── update-domain.md              # Phase 4: Maintenance
+├── LICENSE                                          # MIT License
+├── CLAUDE.md                                        # Project context for Claude agents
+├── .claude/skills/                                  # Agent Skills (open standard)
+│   ├── shared-references/                           # Shared reference files
+│   │   ├── taxonomy-frameworks.md                   #   Bloom's, DOK, SOLO, Marzano's, Fink's
+│   │   ├── cbkst-overview.md                        #   CbKST theory
+│   │   ├── kst-foundations.md                       #   Core KST definitions
+│   │   └── ecd-framework.md                         #   Evidence-Centered Design
+│   ├── extracting-knowledge-items/SKILL.md          # Phase 1: Extract items
+│   ├── decomposing-learning-objectives/SKILL.md     # Phase 1: Decompose objectives
+│   ├── mapping-concepts-and-competences/            # Phase 1: Concept map & competences
+│   │   ├── SKILL.md
+│   │   └── references/fca-methodology.md
+│   ├── building-surmise-relations/                  # Phase 2: QUERY algorithm
+│   │   ├── SKILL.md
+│   │   └── references/query-algorithm-detail.md
+│   ├── constructing-knowledge-space/                # Phase 2: Knowledge space
+│   │   ├── SKILL.md
+│   │   └── references/lattice-theory.md
+│   ├── validating-knowledge-structure/              # Phase 2: Validation
+│   │   ├── SKILL.md
+│   │   └── references/validation-criteria.md
+│   ├── assessing-knowledge-state/                   # Phase 3: Adaptive assessment
+│   │   ├── SKILL.md
+│   │   └── references/blim-polim-models.md
+│   ├── generating-learning-materials/               # Phase 3: Learning materials
+│   │   ├── SKILL.md
+│   │   └── references/udl-scaffolding.md
+│   ├── planning-adaptive-instruction/               # Phase 3: Lecture planning
+│   │   ├── SKILL.md
+│   │   └── references/differentiation-strategies.md
+│   └── updating-knowledge-domain/                   # Phase 4: Maintenance
+│       ├── SKILL.md
+│       └── references/trace-operations.md
 ├── schemas/
-│   └── knowledge-graph.schema.json    # JSON Schema for the graph format
+│   └── knowledge-graph.schema.json                  # JSON Schema for the graph format
 ├── scripts/
-│   └── kst_utils.py                   # Python computational utilities
+│   └── kst_utils.py                                 # Python computational utilities
 ├── references/
-│   └── bibliography.md                # Consolidated academic bibliography (60+ refs)
-└── graphs/                            # Output directory for knowledge graphs
+│   └── bibliography.md                              # Consolidated academic bibliography (60+ refs)
+└── graphs/                                          # Output directory for knowledge graphs
 ```
 
 ---
@@ -399,14 +427,14 @@ This suite implements methods from a mature body of mathematical learning theory
 |------|---------------|---------|
 | Knowledge Space Theory | Doignon & Falmagne (1999), Falmagne & Doignon (2011) | All skills |
 | Competence-Based KST | Heller & Stefanutti (2024), Stefanutti & de Chiusole (2017) | All skills (CbKST layer) |
-| QUERY Algorithm | Koppen & Doignon (1990), Cosyn et al. (2021) | `/build-surmise` |
-| BLIM / PoLIM Assessment | Falmagne et al. (2006), Stefanutti et al. (2020) | `/assess-student` |
-| Formal Concept Analysis | Ganter & Wille (1999), Huang et al. (2025) | `/map-concepts`, `/build-surmise` |
-| Bloom's Revised Taxonomy | Anderson & Krathwohl (2001) | `/extract-domain`, `/decompose-objectives` |
-| Webb's Depth of Knowledge | Webb (1997), Hess et al. (2009) | `/extract-domain`, `/decompose-objectives` |
-| Evidence-Centered Design | Mislevy et al. (2003) | `/assess-student`, `/decompose-objectives` |
-| Universal Design for Learning | CAST (2024) UDL 3.0 | `/generate-materials`, `/plan-instruction` |
-| Learning & Forgetting | de Chiusole et al. (2022) | `/plan-instruction`, `/update-domain` |
+| QUERY Algorithm | Koppen & Doignon (1990), Cosyn et al. (2021) | Building Surmise Relations |
+| BLIM / PoLIM Assessment | Falmagne et al. (2006), Stefanutti et al. (2020) | Assessing Knowledge State |
+| Formal Concept Analysis | Ganter & Wille (1999), Huang et al. (2025) | Mapping Concepts, Building Surmise |
+| Bloom's Revised Taxonomy | Anderson & Krathwohl (2001) | Extracting Items, Decomposing Objectives |
+| Webb's Depth of Knowledge | Webb (1997), Hess et al. (2009) | Extracting Items, Decomposing Objectives |
+| Evidence-Centered Design | Mislevy et al. (2003) | Assessing Knowledge State, Decomposing Objectives |
+| Universal Design for Learning | CAST (2024) UDL 3.0 | Generating Materials, Planning Instruction |
+| Learning & Forgetting | de Chiusole et al. (2022) | Planning Instruction, Updating Domain |
 
 The complete bibliography with 60+ references is in [`references/bibliography.md`](references/bibliography.md).
 
@@ -421,40 +449,40 @@ Here's what a complete workflow looks like for an Introductory Statistics course
 claude
 
 # 1. Feed in the syllabus
-> /extract-domain Here is my Intro Stats syllabus: [paste or provide path]
+> /extracting-knowledge-items Here is my Intro Stats syllabus: [paste or provide path]
 # → Creates graphs/intro-statistics-knowledge-graph.json with ~30-50 items
 
 # 2. Refine with explicit learning objectives
-> /decompose-objectives graphs/intro-statistics-knowledge-graph.json
+> /decomposing-learning-objectives graphs/intro-statistics-knowledge-graph.json
 #   "Students will be able to: 1) Calculate descriptive statistics..."
 # → Adds/refines items with Bloom's, DOK, SOLO classification
 
 # 3. Build the concept map and identify competences
-> /map-concepts graphs/intro-statistics-knowledge-graph.json
+> /mapping-concepts-and-competences graphs/intro-statistics-knowledge-graph.json
 # → Adds competences[], concept relationships, Mermaid diagrams
 
 # 4. Construct the formal prerequisite structure
-> /build-surmise graphs/intro-statistics-knowledge-graph.json
+> /building-surmise-relations graphs/intro-statistics-knowledge-graph.json
 # → Adds surmise_relations[] with confidence scores and rationales
 
 # 5. Derive the knowledge space
-> /construct-space graphs/intro-statistics-knowledge-graph.json
+> /constructing-knowledge-space graphs/intro-statistics-knowledge-graph.json
 # → Adds knowledge_states[], learning_paths[], Hasse diagram
 
 # 6. Validate everything
-> /validate-structure graphs/intro-statistics-knowledge-graph.json
+> /validating-knowledge-structure graphs/intro-statistics-knowledge-graph.json
 # → Reports PASS/WARN/FAIL for mathematical and educational checks
 
 # 7. Assess a student
-> /assess-student graphs/intro-statistics-knowledge-graph.json student-alice
+> /assessing-knowledge-state graphs/intro-statistics-knowledge-graph.json student-alice
 # → Adaptive quiz → determines Alice's knowledge state and outer fringe
 
 # 8. Generate personalized materials for Alice
-> /generate-materials graphs/intro-statistics-knowledge-graph.json student-alice
+> /generating-learning-materials graphs/intro-statistics-knowledge-graph.json student-alice
 # → Custom explanations, examples, practice problems for her outer fringe
 
 # 9. Plan next lecture using all student states
-> /plan-instruction graphs/intro-statistics-knowledge-graph.json
+> /planning-adaptive-instruction graphs/intro-statistics-knowledge-graph.json
 # → Session plan: review targets, groupings, peer tutoring pairings
 ```
 
