@@ -1,0 +1,23 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Reference PDFs (not distributed — see references/bibliography.md for citations)
+knowledge-space-theory-papers/
+
+# Knowledge graph outputs (users generate their own)
+# Uncomment the next line if you want to keep graphs out of version control
+# graphs/*.json

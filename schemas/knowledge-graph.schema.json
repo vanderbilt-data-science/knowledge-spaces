@@ -1,0 +1,403 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "knowledge-graph.schema.json",
+  "title": "Knowledge Graph",
+  "description": "A knowledge graph based on Knowledge Space Theory (KST), with optional Competence-Based KST (CbKST) extensions. Represents a domain of knowledge items, their prerequisite (surmise) relations, feasible knowledge states, learning paths, optional competence/skill layer, and student tracking.",
+  "type": "object",
+  "required": ["metadata", "items", "surmise_relations"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Domain metadata and provenance information.",
+      "required": ["domain_name", "version", "created_at"],
+      "properties": {
+        "domain_name": {
+          "type": "string",
+          "description": "Human-readable name for the knowledge domain (e.g., 'Introductory Statistics')."
+        },
+        "version": {
+          "type": "string",
+          "description": "Semantic version of this knowledge graph (e.g., '1.0.0').",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of when this graph was first created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of the most recent update."
+        },
+        "provenance": {
+          "type": "object",
+          "description": "How this graph was constructed.",
+          "properties": {
+            "source_materials": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "List of source materials used (file paths, URLs, descriptions)."
+            },
+            "methodology": {
+              "type": "string",
+              "description": "Description of the construction methodology used."
+            },
+            "skills_applied": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "List of KST skills applied during construction (e.g., 'extract-domain', 'build-surmise')."
+            },
+            "change_log": {
+              "type": "array",
+              "description": "Chronological log of changes made to this graph.",
+              "items": {
+                "type": "object",
+                "required": ["timestamp", "skill", "description"],
+                "properties": {
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "skill": {
+                    "type": "string",
+                    "description": "Which skill made this change."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "What was changed."
+                  },
+                  "items_added": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "items_removed": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "relations_added": {
+                    "type": "integer"
+                  },
+                  "relations_removed": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "description": "The knowledge domain Q — the set of all atomic knowledge items.",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "description"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this knowledge item (e.g., 'stat-mean', 'calc-limits-def').",
+            "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable short name for this item."
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of what mastery of this item entails."
+          },
+          "bloom_level": {
+            "type": "string",
+            "description": "Cognitive level per Bloom's Revised Taxonomy.",
+            "enum": ["remember", "understand", "apply", "analyze", "evaluate", "create"]
+          },
+          "knowledge_type": {
+            "type": "string",
+            "description": "Knowledge dimension per Bloom's Revised Taxonomy.",
+            "enum": ["factual", "conceptual", "procedural", "metacognitive"]
+          },
+          "dok_level": {
+            "type": "integer",
+            "description": "Webb's Depth of Knowledge level (1-4).",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "solo_level": {
+            "type": "string",
+            "description": "SOLO Taxonomy level for this item.",
+            "enum": ["pre-structural", "uni-structural", "multi-structural", "relational", "extended-abstract"]
+          },
+          "source_objectives": {
+            "type": "array",
+            "description": "Learning objectives this item derives from.",
+            "items": { "type": "string" }
+          },
+          "assessment_criteria": {
+            "type": "string",
+            "description": "How to test whether a student has mastered this item."
+          },
+          "required_competences": {
+            "type": "array",
+            "description": "CbKST: Competence IDs required to master this item. Conjunctive by default (all required). For disjunctive mappings, use an array of arrays (any inner group suffices).",
+            "items": {
+              "oneOf": [
+                { "type": "string" },
+                { "type": "array", "items": { "type": "string" } }
+              ]
+            }
+          },
+          "tags": {
+            "type": "array",
+            "description": "Flexible categorization tags (e.g., topic area, unit number).",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "surmise_relations": {
+      "type": "array",
+      "description": "Prerequisite pairs forming the surmise relation (quasi-order). If (a, b) is present, mastery of b surmises mastery of a — i.e., a is prerequisite for b.",
+      "items": {
+        "type": "object",
+        "required": ["prerequisite", "target"],
+        "properties": {
+          "prerequisite": {
+            "type": "string",
+            "description": "Item ID of the prerequisite item."
+          },
+          "target": {
+            "type": "string",
+            "description": "Item ID of the item that requires the prerequisite."
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Confidence score for this relation (0 = uncertain, 1 = certain)."
+          },
+          "rationale": {
+            "type": "string",
+            "description": "Explanation of why this prerequisite relation holds."
+          },
+          "relation_type": {
+            "type": "string",
+            "description": "Type of conceptual relationship underlying the prerequisite.",
+            "enum": ["prerequisite-of", "is-a", "part-of", "co-requisite", "related-to"]
+          },
+          "source": {
+            "type": "string",
+            "description": "How this relation was determined (e.g., 'query-algorithm', 'concept-map', 'expert-input', 'transitive-closure')."
+          }
+        }
+      }
+    },
+    "competences": {
+      "type": "array",
+      "description": "CbKST: The set of latent skills/competences S underlying the knowledge domain. Each competence is a cognitive ability that may be required by one or more items. Optional — omit for purely item-based KST.",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "description"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this competence.",
+            "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable name for this competence."
+          },
+          "description": {
+            "type": "string",
+            "description": "What this competence entails — the cognitive ability or skill it represents."
+          },
+          "competence_type": {
+            "type": "string",
+            "description": "Nature of this competence.",
+            "enum": ["cognitive", "procedural", "metacognitive", "dispositional"]
+          }
+        }
+      }
+    },
+    "competence_relations": {
+      "type": "array",
+      "description": "CbKST: Prerequisite relations between competences (analogous to surmise_relations for items, but at the skill level).",
+      "items": {
+        "type": "object",
+        "required": ["prerequisite", "target"],
+        "properties": {
+          "prerequisite": {
+            "type": "string",
+            "description": "Competence ID of the prerequisite."
+          },
+          "target": {
+            "type": "string",
+            "description": "Competence ID that requires the prerequisite."
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "knowledge_states": {
+      "type": "array",
+      "description": "Feasible knowledge states — each is a downward-closed subset of items under the surmise relation. Optional for large domains where full enumeration is impractical.",
+      "items": {
+        "type": "object",
+        "required": ["id", "items"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this knowledge state."
+          },
+          "items": {
+            "type": "array",
+            "description": "Item IDs comprising this knowledge state.",
+            "items": { "type": "string" }
+          },
+          "inner_fringe": {
+            "type": "array",
+            "description": "Items in this state that, if removed individually, still leave a feasible state. Represents the most recently/advanced mastered items.",
+            "items": { "type": "string" }
+          },
+          "outer_fringe": {
+            "type": "array",
+            "description": "Items NOT in this state that, if added individually, create a feasible state. Represents items the student is ready to learn next.",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "learning_paths": {
+      "type": "array",
+      "description": "Named sequences through the knowledge space — each is a maximal chain from empty set to full domain.",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "sequence"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this learning path."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable name describing this path's approach or emphasis."
+          },
+          "sequence": {
+            "type": "array",
+            "description": "Ordered list of item IDs representing the learning sequence.",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "description": {
+            "type": "string",
+            "description": "Explanation of why this path is a valid or recommended progression."
+          }
+        }
+      }
+    },
+    "student_states": {
+      "type": "object",
+      "description": "Per-student knowledge state tracking. Keys are student identifiers.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["current_state"],
+        "properties": {
+          "current_state": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Knowledge state ID referencing an entry in knowledge_states[]."
+              },
+              {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Direct set of mastered item IDs (used when knowledge_states[] is not fully enumerated)."
+              }
+            ],
+            "description": "The student's current knowledge state — either a state ID or a direct item set."
+          },
+          "inner_fringe": {
+            "type": "array",
+            "description": "Items at the boundary of what the student has mastered.",
+            "items": { "type": "string" }
+          },
+          "outer_fringe": {
+            "type": "array",
+            "description": "Items the student is ready to learn next.",
+            "items": { "type": "string" }
+          },
+          "competence_state": {
+            "type": "array",
+            "description": "CbKST: Competence IDs the student has mastered (inferred from knowledge state via skill function).",
+            "items": { "type": "string" }
+          },
+          "history": {
+            "type": "array",
+            "description": "Timestamped record of state transitions.",
+            "items": {
+              "type": "object",
+              "required": ["timestamp", "state"],
+              "properties": {
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "state": {
+                  "oneOf": [
+                    { "type": "string" },
+                    { "type": "array", "items": { "type": "string" } }
+                  ]
+                },
+                "trigger": {
+                  "type": "string",
+                  "description": "What caused this state transition (e.g., 'assessment', 'instruction', 'manual-update')."
+                }
+              }
+            }
+          },
+          "assessment_log": {
+            "type": "array",
+            "description": "Log of assessment interactions.",
+            "items": {
+              "type": "object",
+              "required": ["timestamp", "item_id", "response"],
+              "properties": {
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "item_id": {
+                  "type": "string",
+                  "description": "Which item was assessed."
+                },
+                "response": {
+                  "type": "string",
+                  "description": "Student's response or summary.",
+                  "enum": ["correct", "incorrect", "partial", "skipped"]
+                },
+                "question": {
+                  "type": "string",
+                  "description": "The question that was asked."
+                },
+                "details": {
+                  "type": "string",
+                  "description": "Additional details about the response."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
