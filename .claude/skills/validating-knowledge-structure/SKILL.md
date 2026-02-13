@@ -1,5 +1,6 @@
 ---
-name: Validating Knowledge Structure
+name: validating-knowledge-structure
+argument-hint: "<graph-path>"
 description: >
   Use when you need to validate a knowledge graph for mathematical
   consistency, educational plausibility, CbKST integrity, and schema

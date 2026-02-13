@@ -233,7 +233,7 @@ Fink's taxonomy (2003) identifies six dimensions of significant learning that ar
 **Indicators:** History timestamps show extended periods since last interaction; inner fringe items have old mastery dates.
 
 **Adaptations:**
-- **State re-verification:** Recommend running `/assess-student` before generating new materials, since forgetting may have altered the true state
+- **State re-verification:** Recommend running `/assessing-knowledge-state` before generating new materials, since forgetting may have altered the true state
 - **Dedicated review modules:** For items mastered > 4 weeks ago, generate full review modules (not just brief reminders)
 - **Forgetting-aware sequencing:** Review foundational items first (bottom of the prerequisite chain), then work upward, since forgetting cascades downward
 - **Spaced practice integration:** Build a spaced review schedule into the new materials

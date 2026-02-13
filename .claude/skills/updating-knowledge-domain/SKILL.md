@@ -1,14 +1,14 @@
 ---
-name: Updating Knowledge Domain
+name: updating-knowledge-domain
+argument-hint: "<graph-path> <change-description>"
 description: >
   Use when the curriculum, field, or domain evolves and the knowledge graph
-  needs updating. Handles adding, removing, merging, and splitting items and
-  competences while preserving mathematical integrity. Performs impact
-  analysis on student states, competence states, and learning paths.
-  Uses scripts/kst_utils.py for post-change validation.
+  needs updating — adding, removing, merging, or splitting items and
+  competences, or revising prerequisites. Preserves mathematical integrity
+  and performs impact analysis on student states, competence states, and
+  learning paths. Uses scripts/kst_utils.py for post-change validation.
   Reads/produces knowledge graphs in graphs/*.json.
   Part of the KST pipeline — Phase 4, maintenance.
-  Keywords: update, maintain, add item, remove item, merge, split, curriculum change, evolve, revise.
 ---
 
 # Updating Knowledge Domain
@@ -79,7 +79,7 @@ When adding new items to the domain:
 1. **Define the item** -- create with all schema fields (id, label, description, bloom_level, knowledge_type, dok_level, assessment_criteria, tags). Use the ID convention `{domain-abbrev}-{topic}-{specifics}`.
 
 2. **Determine prerequisites (mini QUERY)** -- for the new item, apply the QUERY algorithm reasoning:
-   - Which existing items are logically prerequisite? (Use the cognitive task analysis and logical necessity criteria from `/build-surmise`.)
+   - Which existing items are logically prerequisite? (Use the cognitive task analysis and logical necessity criteria from `/building-surmise-relations`.)
    - Which existing items depend on the new item? (Are there items whose mastery now implies mastery of the new item?)
    - Assign confidence scores and rationale for each relation.
 

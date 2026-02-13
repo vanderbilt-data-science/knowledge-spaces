@@ -1,14 +1,14 @@
 ---
-name: Planning Adaptive Instruction
+name: planning-adaptive-instruction
+argument-hint: "<graph-path>"
 description: >
-  Use when you need to plan a class session using class-wide knowledge
-  state data. Analyzes aggregate student states and competence profiles
-  to determine optimal teaching targets, student groupings, peer tutoring
-  pairings, and session structure following UDL 3.0 principles.
-  Uses scripts/kst_utils.py analytics for class-wide computations.
-  Reads/produces knowledge graphs in graphs/*.json.
+  Use when you need to plan a class session, lecture, or differentiated
+  instruction using class-wide knowledge state data. Analyzes aggregate
+  student states and competence profiles to determine optimal teaching
+  targets, student groupings, and peer tutoring pairings following UDL 3.0
+  principles. Uses scripts/kst_utils.py analytics for class-wide
+  computations. Reads/produces knowledge graphs in graphs/*.json.
   Part of the KST pipeline — Phase 3, requires assessed student states.
-  Keywords: plan, instruction, class, session, lecture, grouping, differentiate, peer tutoring, teach.
 ---
 
 # Planning Adaptive Instruction
@@ -30,7 +30,7 @@ The user provides:
 - **Specific goals** (optional) -- particular items or competences to prioritize
 - **Constraints** (optional) -- room layout, technology access, student needs
 
-Load the graph and verify that `student_states` contains at least 2 students with assessed states. If insufficient student data exists, recommend running `/assess-student` for the class first.
+Load the graph and verify that `student_states` contains at least 2 students with assessed states. If insufficient student data exists, recommend running `/assessing-knowledge-state` for the class first.
 
 ---
 
@@ -241,7 +241,7 @@ Estimated class mastery rate change: <current>% -> <projected>%
 ### 5. Recommendations
 
 - Items that could not be addressed this session (for future sessions)
-- Students who may need individual attention or `/generate-materials`
+- Students who may need individual attention or `/generating-learning-materials`
 - Whether class-wide re-assessment is recommended before the next session
 - Suggestions for session format adjustments based on observed clustering patterns
 - Peer tutoring effectiveness indicators to watch during the session

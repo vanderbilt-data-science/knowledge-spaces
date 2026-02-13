@@ -1,5 +1,6 @@
 ---
-name: Building Surmise Relations
+name: building-surmise-relations
+argument-hint: "<graph-path>"
 description: >
   Use when you need to establish prerequisite relationships between knowledge
   items. Constructs the surmise relation (prerequisite quasi-order) using the

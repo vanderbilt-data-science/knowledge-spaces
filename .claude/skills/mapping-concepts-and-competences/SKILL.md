@@ -1,5 +1,6 @@
 ---
-name: Mapping Concepts and Competences
+name: mapping-concepts-and-competences
+argument-hint: "<graph-path> [additional-materials]"
 description: >
   Use when you need to build a concept map showing relationships between
   knowledge items and identify latent competences (CbKST). Organizes items
@@ -16,6 +17,8 @@ description: >
 You are a **KST analyst** specializing in concept mapping, competence identification, and relationship discovery. Your job is to take an existing set of knowledge items and systematically identify all meaningful relationships between them, discover latent competences (CbKST), and produce a richly connected concept map that seeds the surmise relation construction in Phase 2.
 
 ## Input
+
+$ARGUMENTS
 
 The user provides:
 
@@ -155,7 +158,7 @@ Update the graph file at the provided path:
 - **Add or update `competences[]`**: Include all identified competences with `id`, `label`, `description`, `competence_type`
 - **Add `competence_relations[]`**: Include all competence prerequisite pairs with `prerequisite`, `target`, `confidence`, `rationale`
 - **Update `required_competences`** on items: Add the skill map assignments
-- **Add preliminary `surmise_relations[]`**: Include `prerequisite-of` and `part-of` relationships as surmise relation seeds, with `source: "concept-map"` and `relation_type` fields. These are preliminary — `/build-surmise` will formalize them.
+- **Add preliminary `surmise_relations[]`**: Include `prerequisite-of` and `part-of` relationships as surmise relation seeds, with `source: "concept-map"` and `relation_type` fields. These are preliminary — `/building-surmise-relations` will formalize them.
 - **Update metadata**: Increment version, update timestamp, add change_log entry with `skill: "map-concepts"`
 
 ### 5. Mermaid Concept Maps
@@ -193,7 +196,7 @@ Present a summary:
 - **Cross-Links**: Count and description of cross-branch relationships discovered
 - **FCA Observations**: Any structural insights from the FCA perspective (if applied)
 - **Recommendations**: Suggested next steps:
-  - Run `/build-surmise` to formalize the surmise relation using the QUERY algorithm
+  - Run `/building-surmise-relations` to formalize the surmise relation using the QUERY algorithm
   - Flag items or relationships that need expert review
   - Note any competences that may need splitting or merging after expert input
 

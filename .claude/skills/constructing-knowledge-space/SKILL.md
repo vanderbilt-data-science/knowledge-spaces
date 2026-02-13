@@ -1,5 +1,6 @@
 ---
-name: Constructing Knowledge Space
+name: constructing-knowledge-space
+argument-hint: "<graph-path>"
 description: >
   Use when you need to derive the full knowledge space from the surmise
   relation. Computes all feasible knowledge states (downward-closed sets),

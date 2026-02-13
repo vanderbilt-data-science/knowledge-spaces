@@ -1,6 +1,6 @@
 # Formal Concept Analysis Methodology for Knowledge Structure Construction
 
-This reference details the Formal Concept Analysis (FCA) perspective used in the `/map-concepts` skill. FCA provides a mathematically rigorous framework for discovering structure in item-attribute relationships, and it connects directly to Competence-Based Knowledge Space Theory (CbKST).
+This reference details the Formal Concept Analysis (FCA) perspective used in the `/mapping-concepts-and-competences` skill. FCA provides a mathematically rigorous framework for discovering structure in item-attribute relationships, and it connects directly to Competence-Based Knowledge Space Theory (CbKST).
 
 ## FCA Foundations
 

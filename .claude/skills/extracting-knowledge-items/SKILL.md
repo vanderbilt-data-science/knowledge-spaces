@@ -1,8 +1,9 @@
 ---
-name: Extracting Knowledge Items
+name: extracting-knowledge-items
+argument-hint: "<path-to-course-materials>"
 description: >
   Use when you need to extract atomic knowledge items from course materials
-  (syllabi, textbooks, standards documents, curriculum artifacts).
+  such as syllabi, textbooks, standards documents, or curriculum artifacts.
   Analyzes source materials using hierarchical curriculum decomposition
   and taxonomic classification (Bloom's, DOK, Hess CRM) to produce the
   foundational items[] array for a knowledge graph, plus candidate latent
@@ -16,6 +17,8 @@ description: >
 You are a **KST domain analyst** specializing in LLM-empowered knowledge extraction. Your job is to read course materials and produce a complete, well-classified set of atomic knowledge items that forms the foundation of a Knowledge Space Theory knowledge graph.
 
 ## Input
+
+$ARGUMENTS
 
 The user provides one or more of the following as file paths or pasted content:
 
@@ -88,7 +91,7 @@ Identify **candidate latent competences** — cognitive abilities or skills that
 - Look for recurring cognitive operations across items (e.g., "algebraic manipulation," "statistical reasoning," "graph interpretation")
 - A competence should map to 2+ items to justify its existence
 - Assign preliminary `required_competences` to items (conjunctive by default)
-- Mark these as **candidates** — they will be refined in `/map-concepts`
+- Mark these as **candidates** — they will be refined in `/mapping-concepts-and-competences`
 
 See `.claude/skills/shared-references/cbkst-overview.md` for competence identification patterns and the skill function formalism.
 
@@ -127,11 +130,11 @@ Save the knowledge graph to `graphs/{domain-slug}-knowledge-graph.json` conformi
     "provenance": {
       "source_materials": ["<list of sources analyzed>"],
       "methodology": "LLM-assisted hierarchical curriculum decomposition with taxonomic classification (Bloom's Revised, DOK, Hess CRM) and CbKST competence identification",
-      "skills_applied": ["extract-domain"],
+      "skills_applied": ["extracting-knowledge-items"],
       "change_log": [
         {
           "timestamp": "<ISO 8601 timestamp>",
-          "skill": "extract-domain",
+          "skill": "extracting-knowledge-items",
           "description": "Initial extraction of knowledge items and candidate competences from source materials",
           "items_added": ["<item IDs>"],
           "relations_added": 0
@@ -177,7 +180,7 @@ Present a summary report:
 - **Competence Count**: Number of candidate competences identified
 - **Flags**: Items that were difficult to classify, ambiguous, or may need expert review
 - **Coverage Gaps**: Topics mentioned in source materials but not captured as items
-- **Recommendations**: Suggested next steps (e.g., run `/decompose-objectives` for explicit learning objectives, run `/map-concepts` to build relationships)
+- **Recommendations**: Suggested next steps (e.g., run `/decomposing-learning-objectives` for explicit learning objectives, run `/mapping-concepts-and-competences` to build relationships)
 
 ### 4. Validation
 

@@ -1,14 +1,15 @@
 ---
-name: Assessing Knowledge State
+name: assessing-knowledge-state
+argument-hint: "<graph-path> <student-id>"
 description: >
-  Use when you need to assess a student's current knowledge state using
-  adaptive questioning. Implements ALEKS-style assessment using BLIM
-  (Basic Local Independence Model) with Bayesian state updating,
-  fringe-based item selection, and CbKST competence state inference.
-  Supports PoLIM for graded responses and MOCLIM for population-specific
-  parameters. Reads/produces knowledge graphs in graphs/*.json.
-  Part of the KST pipeline — Phase 3, requires completed knowledge space.
-  Keywords: assess, student, knowledge state, adaptive, BLIM, fringe, competence, quiz, test, diagnose.
+  Use when you need to assess, quiz, test, or diagnose a student's current
+  knowledge state using adaptive questioning. Implements ALEKS-style
+  assessment using BLIM (Basic Local Independence Model) with Bayesian
+  state updating, fringe-based item selection, and CbKST competence state
+  inference. Supports PoLIM for graded responses and MOCLIM for
+  population-specific parameters. Reads/produces knowledge graphs in
+  graphs/*.json. Part of the KST pipeline — Phase 3, requires completed
+  knowledge space.
 ---
 
 # Assessing Knowledge State
@@ -259,7 +260,7 @@ Update `metadata.provenance.skills_applied` and `metadata.provenance.change_log`
 ### 4. Recommendations
 
 - Items flagged for re-assessment (high uncertainty)
-- Whether the student should proceed to `/generate-materials` for outer fringe items
+- Whether the student should proceed to `/generating-learning-materials` for outer fringe items
 - Whether additional assessment is recommended (if stopped early by student request)
 - Specific outer fringe items recommended as learning targets, ordered by competence grouping
 - Whether MOCLIM parameters should be considered for future assessments

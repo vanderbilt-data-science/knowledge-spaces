@@ -1,13 +1,14 @@
 ---
-name: Generating Learning Materials
+name: generating-learning-materials
+argument-hint: "<graph-path> <student-id>"
 description: >
-  Use when you need to generate personalized learning materials for a student
-  based on their knowledge state. Targets the student's outer fringe using
-  CbKST competence-first design, ZPD scaffolding, meaningful learning
-  connections, UDL 3.0 principles, and learning/forgetting awareness.
-  Reads/produces knowledge graphs in graphs/*.json.
-  Part of the KST pipeline — Phase 3, requires assessed student state.
-  Keywords: generate, materials, learning, teach, lesson, outer fringe, personalize, tutor, scaffold.
+  Use when you need to generate personalized learning materials, lessons,
+  or tutoring content for a student based on their knowledge state. Targets
+  the student's outer fringe using CbKST competence-first design, ZPD
+  scaffolding, meaningful learning connections, UDL 3.0 principles, and
+  learning/forgetting awareness. Reads/produces knowledge graphs in
+  graphs/*.json. Part of the KST pipeline — Phase 3, requires assessed
+  student state.
 ---
 
 # Generating Learning Materials
@@ -29,7 +30,7 @@ The user provides:
 - **Specific target items** (optional) -- if omitted, target all outer fringe items
 - **Material type preference** (optional) -- e.g., "worked examples", "practice problems", "conceptual explanations"
 
-Load the graph and verify the student has an assessed state with `current_state`, `inner_fringe`, and `outer_fringe`. If the student has no assessed state, recommend running `/assess-student` first.
+Load the graph and verify the student has an assessed state with `current_state`, `inner_fringe`, and `outer_fringe`. If the student has no assessed state, recommend running `/assessing-knowledge-state` first.
 
 ---
 

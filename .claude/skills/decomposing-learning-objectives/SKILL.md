@@ -1,5 +1,6 @@
 ---
-name: Decomposing Learning Objectives
+name: decomposing-learning-objectives
+argument-hint: "<graph-path> [learning-objectives]"
 description: >
   Use when you have explicit learning objectives to decompose into testable,
   atomic knowledge items. Applies five taxonomic frameworks (Bloom's Revised,
@@ -15,6 +16,8 @@ description: >
 You are a **KST curriculum analyst** specializing in learning objective decomposition. Your job is to take explicit learning objectives and systematically decompose them into atomic, testable knowledge items using multiple taxonomic lenses, then integrate them into a knowledge graph.
 
 ## Input
+
+$ARGUMENTS
 
 The user provides:
 
@@ -140,7 +143,7 @@ For each original learning objective, present:
 | **Fink** | Applicable categories |
 | **ECD Summary** | Claim / Evidence / Task in one line each |
 | **Decomposed Items** | List of item IDs produced from this objective |
-| **Prerequisites** | Preliminary prerequisite notes (refined in /build-surmise) |
+| **Prerequisites** | Preliminary prerequisite notes (refined in /building-surmise-relations) |
 | **Competence Notes** | CbKST competences associated with these items |
 
 ### 2. Updated Knowledge Graph
@@ -170,11 +173,11 @@ Present a summary:
 - **Hess CRM Distribution**: Items per CRM cell, noting empty or overloaded cells
 - **SOLO Distribution**: Count per level
 - **Fink Coverage**: Which Fink categories are represented; which are absent
-- **Prerequisite Seeds**: Preliminary prerequisite pairs identified (to be formalized in /build-surmise)
+- **Prerequisite Seeds**: Preliminary prerequisite pairs identified (to be formalized in /building-surmise-relations)
 - **Competence Summary**: New and linked CbKST competences
 - **Recommendations**: Suggested next steps:
-  - Run `/map-concepts` to discover relationships and refine competences
-  - Run `/build-surmise` to formalize prerequisite relations
+  - Run `/mapping-concepts-and-competences` to discover relationships and refine competences
+  - Run `/building-surmise-relations` to formalize prerequisite relations
   - Flag objectives that were ambiguous or under-specified
 
 After saving, recommend validation:
